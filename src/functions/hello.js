@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const { API } = process.env;
 
-exports.handler = async (event, context) => {
+const handler = async (event, context) => {
   return fetch(
     'https://ossindex.sonatype.org/api/v3/component-report',
     {
@@ -26,3 +26,5 @@ exports.handler = async (event, context) => {
   }).catch(error => ({ statusCode: 422, body: String(error) }));
   
 };
+
+module.exports = { handler }
