@@ -7,7 +7,7 @@ function App() {
   const [reposnse, setReposnse] = useState({});
 
   useEffect(() => {
-    fetch("/.netlify/functions/hello")
+    fetch("/.netlify/functions/hello", {headers: { "Content-Type": "application/json" }})
       .then(res => res.json())
       .then(res => setReposnse(res));
   });
