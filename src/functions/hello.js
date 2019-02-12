@@ -1,6 +1,26 @@
+const { API } = process.env;
+
 exports.handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify("Hello, World")
-  };
+  return fetch(
+    'https://ossindex.sonatype.org/api/v3/component-report',
+    {
+      method: 'POST',
+      headers: {
+        "authorization": `Basic ${API}`
+      },
+      body: JSON.stringify({
+        "coordinates": [
+          "pkg:npm/lodash@4.17.5"
+        ]
+      })
+    }
+  )
+    .then(res => res.json())
+    .then(res => {
+      return {
+        statusCode: 200,
+        body: JSON.stringify(res)
+      };
+  })
+  
 };
