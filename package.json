@@ -5,10 +5,10 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "node-fetch": "2.3.0",
     "react": "16.8.0",
     "react-dom": "16.8.0",
-    "react-scripts": "2.0.3",
-    "node-fetch": "^2.2.0"
+    "react-scripts": "2.0.3"
   },
   "devDependencies": {},
   "scripts": {
