@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const { API } = process.env;
 
 exports.handler = async (event, context) => {
@@ -21,6 +23,6 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         body: JSON.stringify(res)
       };
-  })
+  }).catch(error => ({ statusCode: 422, body: String(error) }));
   
 };
