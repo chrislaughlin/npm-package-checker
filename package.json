@@ -5,10 +5,12 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "node-fetch": "2.3.0",
+    "axios": "^0.18.0",
+    "http-proxy-middleware": "^0.19.1",
     "react": "16.8.0",
     "react-dom": "16.8.0",
-    "react-scripts": "2.0.3"
+    "react-scripts": "2.0.3",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "netlify-lambda": "^0.4.0",
@@ -19,7 +21,12 @@
     "build": "react-scripts build && npm run build:server",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build:server": "netlify-lambda build src/functions"
+    "build:server": "netlify-lambda serve src/functions"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

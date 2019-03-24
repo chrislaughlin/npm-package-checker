@@ -1,30 +1,36 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
 
-const { API } = process.env;
+const {API, username} = process.env;
 
 const handler = async (event, context) => {
-  return fetch(
-    'https://ossindex.sonatype.org/api/v3/component-report',
-    {
-      method: 'POST',
-      headers: {
-        "authorization": `Basic ${API}`
-      },
-      body: JSON.stringify({
-        "coordinates": [
-          "pkg:npm/lodash@4.17.5"
-        ]
-      })
-    }
-  )
-    .then(res => res.json())
-    .then(res => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(res)
-      };
-  }).catch(error => ({ statusCode: 422, body: String(error) }));
-  
+    return axios(
+        {
+            url: 'https://ossindex.sonatype.org/api/v3/component-report',
+            method: 'POST',
+            auth: {
+                username: username,
+                password: API
+            },
+            data: {
+                "coordinates": [
+                    "pkg:npm/lodash@4.17.5"
+                ]
+            }
+        }
+    )
+        .then(res => {
+            console.log('############# PASSED ############# ')
+            console.log(res);
+            return {
+                statusCode: 200,
+                body: JSON.stringify(res.data)
+            };
+        }).catch(error => {
+            console.log('############# FAILED ############# ')
+            console.log(error);
+            return {statusCode: 422, body: {}}
+        });
+
 };
 
-module.exports = { handler }
+module.exports = {handler}
