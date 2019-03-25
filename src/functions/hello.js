@@ -13,7 +13,7 @@ const handler = async (event, context) => {
             },
             data: {
                 "coordinates": [
-                    "pkg:npm/lodash@4.17.5"
+                    `pkg:npm/${event.queryStringParameters.pkg}@latest`
                 ]
             }
         }
