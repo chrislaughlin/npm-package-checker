@@ -49,7 +49,7 @@ function App() {
                     <p>
                         <ul>
                             {reposnse.vulnerabilities.map(vuln => {
-                                <li>{vuln.title}</li>
+                                return <li>{vuln.title}</li>
                             })}
                         </ul>
                     </p>
