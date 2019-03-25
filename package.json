@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build:server": "netlify-lambda serve src/functions"
+    "build:server": "netlify-lambda serve src/functions",
+    "build:lambda": "npm run build && netlify-lambda build src/functions"
   },
   "browserslist": [
     ">0.2%",
