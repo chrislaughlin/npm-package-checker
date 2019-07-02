@@ -14,13 +14,20 @@ function App() {
 
     useEffect(() => {
         if (fetchData) {
-            fetch(`/.netlify/functions/hello?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
+            fetch(`/.netlify/functions/checkPackage?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
                 .then(res => res.json())
                 .then(res => setReposnse(res[0]));
             setFetchData(false);
         }
 
     }, [fetchData]);
+
+    useEffect(() => {
+        fetch(`/.netlify/functions/getPackagesFromGitRepo?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
+                .then(res => res.json())
+                .then(res => console.log(res));
+
+    }, []);
 
     return (
         <div className="App">
