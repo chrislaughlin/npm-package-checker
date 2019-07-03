@@ -17,6 +17,13 @@ const RepoEntryContainer = styled.div`
         width: 300px;
         background: transparent;
         border: none;
+        font-size: 18px;
+        color: gray;
+        text-overflow: ellipsis;
+      }
+      
+      input:focus {
+        outline: none;
       }
       
       button {

@@ -8,8 +8,10 @@ import RepoEntry from './comments/repoEntry/repoEntry';
 function App() {
     const [ repoUrl, setRepoUrl ] = useState('');
     const [ repoData, setRepoData] = useState({});
+    const [ isFetchingData, setIsFetchingData] = useState(false);
 
     const fetchRepoData = () => {
+        setIsFetchingData(true);
         fetch(
             `/.netlify/functions/getPackagesFromGitRepo`,
             {
@@ -19,7 +21,10 @@ function App() {
             }
         )
         .then(res => res.json())
-        .then(res => setRepoData(res));
+        .then(res => {
+            setRepoData(res)
+            setIsFetchingData(false);
+        });
     }
 
     return (
@@ -31,7 +36,7 @@ function App() {
             />
             <p>
                 {
-                    JSON.stringify(repoData, null, 4)
+                    isFetchingData ? 'Loading.....' : JSON.stringify(repoData, null, 4)
                 }
             </p>
         </div>
@@ -40,21 +45,3 @@ function App() {
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App/>, rootElement);
-
-// const [pkgName, setPkgName] = useState('');
-// const [fetchData, setFetchData] = useState(false);
-// const [reposnse, setReposnse] = useState({
-//     description: '',
-//     reference: '',
-//     vulnerabilities: []
-// });
-//
-// useEffect(() => {
-//     if (fetchData) {
-//         fetch(`/.netlify/functions/checkPackage?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
-//             .then(res => res.json())
-//             .then(res => setReposnse(res[0]));
-//         setFetchData(false);
-//     }
-//
-// }, [fetchData]);
