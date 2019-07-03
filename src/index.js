@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 
 import "./styles.css";
 
+import RepoEntry from './comments/repoEntry/repoEntry';
+
 function App() {
     const [ repoUrl, setRepoUrl ] = useState('');
     const [ repoData, setRepoData] = useState({});
@@ -22,18 +24,11 @@ function App() {
 
     return (
         <div className="App">
-            <h1>npm package check</h1>
-            <h2>Enter a github repo below</h2>
-            <input
-                value={repoUrl}
-                placeholder="https://github.com/username/repo"
-                onChange={evt => setRepoUrl(evt.target.value)}
+            <RepoEntry
+                repoUrl={repoUrl}
+                setRepoUrl={setRepoUrl}
+                fetchRepoData={fetchRepoData}
             />
-            <button
-                onClick={() => fetchRepoData()}
-            >
-                Get Data
-            </button>
             <p>
                 {
                     JSON.stringify(repoData, null, 4)
