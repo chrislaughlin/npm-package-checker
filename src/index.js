@@ -4,66 +4,62 @@ import ReactDOM from "react-dom";
 import "./styles.css";
 
 function App() {
-    const [pkgName, setPkgName] = useState('');
-    const [fetchData, setFetchData] = useState(false);
-    const [reposnse, setReposnse] = useState({
-        description: '',
-        reference: '',
-        vulnerabilities: []
-    });
+    const [ repoUrl, setRepoUrl ] = useState('');
+    const [ repoData, setRepoData] = useState({});
 
-    useEffect(() => {
-        if (fetchData) {
-            fetch(`/.netlify/functions/checkPackage?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
-                .then(res => res.json())
-                .then(res => setReposnse(res[0]));
-            setFetchData(false);
-        }
-
-    }, [fetchData]);
-
-    useEffect(() => {
-        fetch(`/.netlify/functions/getPackagesFromGitRepo?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
-                .then(res => res.json())
-                .then(res => console.log(res));
-
-    }, []);
+    const fetchRepoData = () => {
+        fetch(
+            `/.netlify/functions/getPackagesFromGitRepo`,
+            {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({repo: repoUrl})
+            }
+        )
+        .then(res => res.json())
+        .then(res => setRepoData(res));
+    }
 
     return (
         <div className="App">
             <h1>npm package check</h1>
-            <h2>Enter a package name below</h2>
+            <h2>Enter a github repo below</h2>
             <input
-                value={pkgName}
-                onChange={evt => setPkgName(evt.target.value)}
+                value={repoUrl}
+                placeholder="https://github.com/username/repo"
+                onChange={evt => setRepoUrl(evt.target.value)}
             />
             <button
-                onClick={() => setFetchData(true)}
+                onClick={() => fetchRepoData()}
             >
                 Get Data
             </button>
-            <p><b>description</b>
-                {reposnse.description}
+            <p>
+                {
+                    JSON.stringify(repoData, null, 4)
+                }
             </p>
-            <p><b>reference</b>
-                {reposnse.reference}
-            </p>
-            <p><b>vulnerabilities</b>
-                {reposnse.vulnerabilities.length}
-            </p>
-            {
-                reposnse.vulnerabilities.length &&
-                    <p>
-                        <ul>
-                            {reposnse.vulnerabilities.map(vuln => {
-                                return <li>{vuln.title}</li>
-                            })}
-                        </ul>
-                    </p>
-            }
         </div>
     );
 }
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App/>, rootElement);
+
+// const [pkgName, setPkgName] = useState('');
+// const [fetchData, setFetchData] = useState(false);
+// const [reposnse, setReposnse] = useState({
+//     description: '',
+//     reference: '',
+//     vulnerabilities: []
+// });
+//
+// useEffect(() => {
+//     if (fetchData) {
+//         fetch(`/.netlify/functions/checkPackage?pkg=${pkgName}`, {headers: {"Content-Type": "application/json"}})
+//             .then(res => res.json())
+//             .then(res => setReposnse(res[0]));
+//         setFetchData(false);
+//     }
+//
+// }, [fetchData]);
