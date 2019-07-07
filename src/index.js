@@ -24,61 +24,7 @@ function App() {
         showError: false,
         message: 'Unknown error, I probably half assed the code'
     })
-    const [ selectedVuln, setSelectedVuln ] = useState({
-            "pkg": "babel-core",
-            "pkgDescription": "A compiler for writing next generation JavaScript",
-            "vulns": [
-                {
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },
-                {
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },
-                {
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },
-                {
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },{
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },
-                {
-                    "id": "6688ad9f-7b71-4e9d-8183-38637fbe821c",
-                    "title": "CWE-377: Insecure Temporary File",
-                    "description": "Creating and using insecure temporary files can leave application and system data vulnerable to attack.",
-                    "cvssScore": 0,
-                    "cwe": "CWE-377",
-                    "reference": "https://ossindex.sonatype.org/vuln/6688ad9f-7b71-4e9d-8183-38637fbe821c"
-                },
-
-            ]
-        }
-    );
+    const [ selectedVuln, setSelectedVuln ] = useState(null);
 
     const fetchRepoData = () => {
         setIsFetchingData(true);
