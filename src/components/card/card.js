@@ -9,9 +9,7 @@ const StyledCard = styled.div`
     border-radius: 15px;
     height: 170px;
     background-color: #3a4549;
-    -webkit-box-shadow: 10px 10px 20px -1px rgba(0,0,0,0.63);
-    -moz-box-shadow: 10px 10px 20px -1px rgba(0,0,0,0.63);
-    box-shadow: 10px 10px 20px -1px rgba(0,0,0,0.63);
+    box-shadow: 4px 5px 20px -1px rgba(0,0,0,0.63);
     word-break: break-word;
     
     .pkg {
@@ -38,11 +36,14 @@ const StyledCard = styled.div`
 const Card = ({
     name,
     desc,
-    count
+    count,
+    onSelectVuln
 }) => {
 
     return (
-        <StyledCard>
+        <StyledCard
+            onClick={onSelectVuln}
+        >
             <div className="pkg">{name}</div>
             <div className="description">
                 {desc}
