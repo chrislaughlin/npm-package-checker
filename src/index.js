@@ -8,6 +8,7 @@ import RepoEntry from './components/repoEntry/repoEntry';
 import Card from './components/card/card';
 import Spinner from './components/spinner/spinner';
 import VulnDetails from './components/vulnDetailsModal/vulnDetailsModal';
+import NoVulnsMessage from './components/noVulnsMessage/noVulnsMessage';
 
 const Cards = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const DEFAULT_ERROR_MESSAGE = 'Unknown error, I probably half assed the code';
 
 function App() {
     const [ repoUrl, setRepoUrl ] = useState('');
-    const [ repoData, setRepoData] = useState([]);
+    const [ repoData, setRepoData] = useState(null);
     const [ isFetchingData, setIsFetchingData] = useState(false);
     const [ error, setError ] = useState({
         showError: false,
@@ -61,6 +62,7 @@ function App() {
         });
     }
 
+    console.log(repoData);
     return (
         <div className="App">
             <RepoEntry
@@ -73,17 +75,25 @@ function App() {
             }
             <Cards>
                 {
-                    isFetchingData ? <Spinner/> :
-                        !error.showError && repoData.map(pkg => {
-                            return (
-                                <Card
-                                    name={pkg.pkg}
-                                    desc={pkg.pkgDescription}
-                                    count={pkg.vulns.length}
-                                    onSelectVuln={setSelectedVuln.bind(this, pkg)}
-                                />
-                            )
-                        })
+                    isFetchingData && <Spinner/>
+                }
+                {
+                    repoData === null && <div/>
+                }
+                {
+                    repoData && repoData.length === 0 && <NoVulnsMessage/>
+                }
+                {
+                    !error.showError && repoData && repoData.map(pkg => {
+                        return (
+                            <Card
+                                name={pkg.pkg}
+                                desc={pkg.pkgDescription}
+                                count={pkg.vulns.length}
+                                onSelectVuln={setSelectedVuln.bind(this, pkg)}
+                            />
+                        )
+                    })
                 }
             </Cards>
             {
