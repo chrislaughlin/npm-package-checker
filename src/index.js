@@ -1,14 +1,28 @@
-import React, {useState, useEffect} from "react";
+import React, {useState } from "react";
 import ReactDOM from "react-dom";
+import styled from 'styled-components';
 
 import "./styles.css";
 
-import RepoEntry from './comments/repoEntry/repoEntry';
+import RepoEntry from './components/repoEntry/repoEntry';
+import Card from './components/card/card';
+import Spinner from './components/spinner/spinner';
+
+const Cards = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const DEFAULT_ERROR_MESSAGE = 'Unknown error, I probably half assed the code';
 
 function App() {
     const [ repoUrl, setRepoUrl ] = useState('');
-    const [ repoData, setRepoData] = useState({});
+    const [ repoData, setRepoData] = useState([]);
     const [ isFetchingData, setIsFetchingData] = useState(false);
+    const [ error, setError ] = useState({
+        showError: false,
+        message: 'Unknown error, I probably half assed the code'
+    })
 
     const fetchRepoData = () => {
         setIsFetchingData(true);
@@ -22,7 +36,24 @@ function App() {
         )
         .then(res => res.json())
         .then(res => {
-            setRepoData(res)
+            if (res.error) {
+                setError({
+                    showError: true,
+                    message: res.error || DEFAULT_ERROR_MESSAGE
+                })
+            } else {
+                setRepoData(res)
+                setError({
+                    showError: false
+                })
+            }
+
+            setIsFetchingData(false);
+        }).catch(() => {
+            setError({
+                showError: true,
+                message: DEFAULT_ERROR_MESSAGE
+            })
             setIsFetchingData(false);
         });
     }
@@ -34,11 +65,23 @@ function App() {
                 setRepoUrl={setRepoUrl}
                 fetchRepoData={fetchRepoData}
             />
-            <p>
+            {
+                error.showError && <p>{error.message}</p>
+            }
+            <Cards>
                 {
-                    isFetchingData ? 'Loading.....' : JSON.stringify(repoData, null, 4)
+                    isFetchingData ? <Spinner/> :
+                        !error.showError && repoData.map(pkg => {
+                            return (
+                                <Card
+                                    name={pkg.pkg}
+                                    desc={pkg.pkgDescription}
+                                    count={pkg.vulns.length}
+                                />
+                            )
+                        })
                 }
-            </p>
+            </Cards>
         </div>
     );
 }

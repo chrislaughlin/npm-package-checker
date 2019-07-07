@@ -34,6 +34,7 @@ const RepoEntryContainer = styled.div`
         color: #39ff15;
         border-color: #39ff15;
         font-weight: bold;
+        margin-left: 20px;
       }
   }
 `;

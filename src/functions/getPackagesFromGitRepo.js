@@ -10,17 +10,21 @@ const handler = async event => {
     try {
         const repoUrl = JSON.parse(event.body).repo;
 
+        console.log(`DEBUG: unprocessed url: ${repoUrl}`);
+
         if (repoUrl === '') {
+            console.log(`ERROR: repoUrl empty`);
             return {
                 statusCode: 400,
-                body: {error: 'repoUrl empty'}
+                body: JSON.stringify({error: 'repoUrl empty'})
             }
         }
 
         if (!repoUrl.includes(GITHUB_COM)) {
+            console.log(`ERROR: Only GitHub repos are supported`);
             return {
                 statusCode: 400,
-                body: {error: 'Only GitHub repos are supported'}
+                body: JSON.stringify({error: 'Only GitHub repos are supported'})
             }
         }
 
@@ -33,13 +37,15 @@ const handler = async event => {
                 .replace(HTTPS_GITHUB_COM, RAW_URL_START)
                 .replace(HTTP_GITHUB_COM, RAW_URL_START);
         } else {
+            console.log(`ERROR: Repo url format not supported`);
             return {
                 statusCode: 400,
-                body: {error: 'Repo url format not supported'}
+                body: JSON.stringify({error: 'Repo url format not supported'})
             }
         }
 
         rawPackageUrl = rawPackageUrl.concat('/master/package.json');
+        console.log(`DEBUG: Package json url: ${rawPackageUrl}`);
 
         const { data: packageJson } = await axios({
             method: 'GET',
@@ -47,9 +53,18 @@ const handler = async event => {
         });
 
         const packageNames = Array.from(new Set([
-            ...Object.keys(packageJson.dependencies),
-            ...Object.keys(packageJson.devDependencies),
-        ]));
+            ...Object.keys(packageJson.dependencies || {}),
+            ...Object.keys(packageJson.devDependencies || {}),
+        ])).filter(pkg => !pkg.includes('@'));
+
+        if (packageNames.length === 0) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({error: 'Project does not have any dependencies or devDependencies'})
+            };
+        }
+
+        console.log(`DEBUG: packageNames: ${JSON.stringify(packageNames)}`);
 
         const vulns = await axios({
             url: `${URL}/.netlify/functions/checkPackages`,
