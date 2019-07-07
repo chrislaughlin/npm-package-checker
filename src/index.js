@@ -12,6 +12,7 @@ import VulnDetails from './components/vulnDetailsModal/vulnDetailsModal';
 const Cards = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const DEFAULT_ERROR_MESSAGE = 'Unknown error, I probably half assed the code';

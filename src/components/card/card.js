@@ -6,11 +6,13 @@ const StyledCard = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1 1 300px;
+    max-width: 300px;
     border-radius: 15px;
     height: 170px;
     background-color: #3a4549;
     box-shadow: 4px 5px 20px -1px rgba(0,0,0,0.63);
     word-break: break-word;
+    cursor: pointer;
     
     .pkg {
         font-size: 24px;
