@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "main": "src/index.js",
+  "main": "src/index.tsx",
   "dependencies": {
+    "@types/react": "^16.8.24",
+    "@types/react-dom": "^16.8.5",
+    "@types/styled-components": "^4.1.18",
     "http-proxy-middleware": "^0.19.1",
     "react": "16.8.0",
     "react-dom": "16.8.0",
     "react-modal": "^3.8.2",
-    "react-scripts": "2.0.3",
+    "react-scripts": "3.0.1",
     "request": "^2.88.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
     "axios": "^0.18.0",

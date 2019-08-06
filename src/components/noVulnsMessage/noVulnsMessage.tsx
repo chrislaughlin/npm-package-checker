@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 
 import NoVulns from './noVulns.jpg'
+import {VulnerablePackage} from "../../types/vulnerablePackage";
 
 const StyledImage = styled.img`
   margin: 10px;
   width: 200px;
 `;
 
-const NoVulnsMessage = () => {
+type Props = {
+    repoData: Array<VulnerablePackage> | undefined
+}
+
+const NoVulnsMessage:FunctionComponent<Props> = ({repoData}) => {
+    if (!repoData || repoData.length !==  0) return null;
+
     return (
         <StyledImage
             src={NoVulns}

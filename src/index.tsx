@@ -4,11 +4,16 @@ import styled from 'styled-components';
 
 import "./styles.css";
 
+//Types
+import { VulnerablePackage } from './types/vulnerablePackage';
+
+//Components
 import RepoEntry from './components/repoEntry/repoEntry';
-import Card from './components/card/card';
 import Spinner from './components/spinner/spinner';
 import VulnDetails from './components/vulnDetailsModal/vulnDetailsModal';
 import NoVulnsMessage from './components/noVulnsMessage/noVulnsMessage';
+import RepoCards from './components/repoCards/repoCards';
+
 
 const Cards = styled.div`
   display: flex;
@@ -18,15 +23,21 @@ const Cards = styled.div`
 
 const DEFAULT_ERROR_MESSAGE = 'Unknown error, I probably half assed the code';
 
+type Pky =  {
+    pkg: string
+    pkgDescription: string
+    vulns: Array<any>
+}
+
 function App() {
     const [ repoUrl, setRepoUrl ] = useState('');
-    const [ repoData, setRepoData] = useState(null);
+    const [ repoData, setRepoData] = useState<Array<VulnerablePackage> | undefined>(undefined);
     const [ isFetchingData, setIsFetchingData] = useState(false);
     const [ error, setError ] = useState({
         showError: false,
         message: 'Unknown error, I probably half assed the code'
     })
-    const [ selectedVuln, setSelectedVuln ] = useState(null);
+    const [ selectedVuln, setSelectedVuln ] = useState<Pky | undefined>(undefined);
 
     const fetchRepoData = () => {
         setIsFetchingData(true);
@@ -45,12 +56,14 @@ function App() {
                     showError: true,
                     message: res.error || DEFAULT_ERROR_MESSAGE
                 })
-            } else {
-                setRepoData(res)
-                setError({
-                    showError: false
-                })
+                return;
             }
+
+            setRepoData(res)
+            setError({
+                showError: false,
+                message: DEFAULT_ERROR_MESSAGE
+            })
 
             setIsFetchingData(false);
         }).catch(() => {
@@ -62,7 +75,6 @@ function App() {
         });
     }
 
-    console.log(repoData);
     return (
         <div className="App">
             <RepoEntry
@@ -74,32 +86,23 @@ function App() {
                 error.showError && <p>{error.message}</p>
             }
             <Cards>
+                <Spinner showSpinner={isFetchingData}/>
+                <NoVulnsMessage
+                    repoData={repoData}
+                />
                 {
-                    isFetchingData && <Spinner/>
-                }
-                {
-                    repoData === null && <div/>
-                }
-                {
-                    repoData && repoData.length === 0 && <NoVulnsMessage/>
-                }
-                {
-                    !error.showError && repoData && repoData.map(pkg => {
-                        return (
-                            <Card
-                                name={pkg.pkg}
-                                desc={pkg.pkgDescription}
-                                count={pkg.vulns.length}
-                                onSelectVuln={setSelectedVuln.bind(this, pkg)}
-                            />
-                        )
-                    })
+                    !error.showError &&
+                    repoData &&
+                    <RepoCards
+                        repoData={repoData}
+                        setSelectedVuln={setSelectedVuln}
+                    />
                 }
             </Cards>
             {
                 selectedVuln &&
                 <VulnDetails
-                    onClose={() => setSelectedVuln(null)}
+                    onClose={() => setSelectedVuln(undefined)}
                     selectedVuln={selectedVuln}
                 />
             }
