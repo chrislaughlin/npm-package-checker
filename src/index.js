@@ -1,6 +1,7 @@
 import React, {useState } from "react";
 import ReactDOM from "react-dom";
 import styled from 'styled-components';
+import * as Sentry from '@sentry/browser';
 
 import "./styles.css";
 
@@ -62,7 +63,6 @@ function App() {
         });
     }
 
-    console.log(repoData);
     return (
         <div className="App">
             <RepoEntry
@@ -109,4 +109,6 @@ function App() {
 }
 
 const rootElement = document.getElementById("root");
+
+Sentry.init({dsn: "https://005219b3e5c149398a581805eb195b2a@sentry.io/1537880"});
 ReactDOM.render(<App/>, rootElement);
